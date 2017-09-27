@@ -1,0 +1,3 @@
+URL = "application under test url"
+AUTH_ID = "AuthenticationID"
+AUTH_TOKEN = "AuthneticationToken"

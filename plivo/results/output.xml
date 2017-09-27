@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20170927 10:16:42.123" generator="Robot 3.0.2 (Python 2.7.11 on darwin)">
+<suite source="/Users/pokuriraghavendra/git/plivo/Tests/03_SendMessage.robot" id="s1" name="03 SendMessage">
+<test id="s1-t1" name="Send message">
+<kw type="setup" name="Create plivo session" library="Common">
+<kw name="Create List" library="BuiltIn">
+<doc>Returns a list containing given items.</doc>
+<arguments>
+<arg>${AUTH_ID}</arg>
+<arg>${AUTH_TOKEN}</arg>
+</arguments>
+<assign>
+<var>${auth_list}</var>
+</assign>
+<msg timestamp="20170927 10:16:42.567" level="INFO">${auth_list} = ['MAYWYYODBJOTBKM2E4ZT', 'NWRiZDJmYTdhYzlkNTVmNTUwZmVmNzlmNGY4NGNk']</msg>
+<status status="PASS" endtime="20170927 10:16:42.568" starttime="20170927 10:16:42.567"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>https://${BASE_URL}</arg>
+<arg>auth=${auth_list}</arg>
+<arg>verify=False</arg>
+</arguments>
+<msg timestamp="20170927 10:16:42.568" level="INFO">Creating Session using : alias=plivo, url=https://api.plivo.com, headers={},                     cookies=None, auth=&lt;requests.auth.HTTPBasicAuth object at 0x104178950&gt;, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20170927 10:16:42.569" starttime="20170927 10:16:42.568"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:42.569" starttime="20170927 10:16:42.566"></status>
+</kw>
+<kw name="Get Account credits">
+<assign>
+<var>${credits}</var>
+</assign>
+<kw name="Make get request to get acct details" library="Search">
+<assign>
+<var>${acct_details_resp}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>Accept=application/json</arg>
+</arguments>
+<assign>
+<var>${headers}</var>
+</assign>
+<msg timestamp="20170927 10:16:42.571" level="INFO">${headers} = {u'Content-Type': u'application/json', u'Accept': u'application/json'}</msg>
+<status status="PASS" endtime="20170927 10:16:42.571" starttime="20170927 10:16:42.570"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>${API_VERSION}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${get_request_resp}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.281" level="INFO">Get Request using : alias=plivo, uri=/v1/Account/MAYWYYODBJOTBKM2E4ZT/, headers={u'Content-Type': u'application/json', u'Accept': u'application/json'} </msg>
+<msg timestamp="20170927 10:16:46.281" level="INFO">${get_request_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.281" starttime="20170927 10:16:42.571"></status>
+</kw>
+<msg timestamp="20170927 10:16:46.282" level="INFO">${acct_details_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.282" starttime="20170927 10:16:42.570"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${acct_details_resp.content}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.282" level="INFO">{
+  "account_type": "standard",
+  "address": "",
+  "api_id": "dd6d4978-a33e-11e7-920b-0600a1193e9b",
+  "auth_id": "MAYWYYODBJOTBKM2E4ZT",
+  "auto_recharge": false,
+  "billing_mode": "prepaid",
+  "cash_credits": "1.56851",
+  "city": "",
+  "name": "Raghu",
+  "resource_uri": "/v1/Account/MAYWYYODBJOTBKM2E4ZT/",
+  "state": "",
+  "timezone": "Asia/Kolkata"
+}</msg>
+<status status="PASS" endtime="20170927 10:16:46.282" starttime="20170927 10:16:46.282"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${acct_details_resp.status_code}</arg>
+<arg>200</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.283" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.283" starttime="20170927 10:16:46.282"></status>
+</kw>
+<kw name="Json Load" library="testlib">
+<arguments>
+<arg>${acct_details_resp.content}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.284" level="INFO">${response} = {u'city': u'', u'account_type': u'standard', u'name': u'Raghu', u'cash_credits': u'1.56851', u'state': u'', u'api_id': u'dd6d4978-a33e-11e7-920b-0600a1193e9b', u'billing_mode': u'prepaid', u'auto_rech...</msg>
+<status status="PASS" endtime="20170927 10:16:46.284" starttime="20170927 10:16:46.283"></status>
+</kw>
+<msg timestamp="20170927 10:16:46.284" level="INFO">${credits} = 1.56851</msg>
+<status status="PASS" endtime="20170927 10:16:46.284" starttime="20170927 10:16:42.569"></status>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${credits_before}</arg>
+<arg>${credits}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.285" level="INFO">${credits_before} = 1.56851</msg>
+<status status="PASS" endtime="20170927 10:16:46.286" starttime="20170927 10:16:46.284"></status>
+</kw>
+<kw name="Make post request to send message" library="Search">
+<arguments>
+<arg>${MESSAGE_PAYLOAD}</arg>
+</arguments>
+<assign>
+<var>${send_message_resp}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>Accept=application/json</arg>
+</arguments>
+<assign>
+<var>${headers}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.287" level="INFO">${headers} = {u'Content-Type': u'application/json', u'Accept': u'application/json'}</msg>
+<status status="PASS" endtime="20170927 10:16:46.287" starttime="20170927 10:16:46.286"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>${API_VERSION}${MESSAGE_ENDPOINT}/</arg>
+<arg>data=${payload}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${post_request_resp}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.588" level="INFO">Post Request using : alias=plivo, uri=/v1/Account/MAYWYYODBJOTBKM2E4ZT/Message/, data={"src": "12342521239", "dst": "12342521240", "text": "Test Automation Message"},                     headers={u'Content-Type': u'application/json', u'Accept': u'application/json'}, files=None, allow_redirects=True </msg>
+<msg timestamp="20170927 10:16:46.588" level="INFO">${post_request_resp} = &lt;Response [202]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.588" starttime="20170927 10:16:46.287"></status>
+</kw>
+<msg timestamp="20170927 10:16:46.589" level="INFO">${send_message_resp} = &lt;Response [202]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.589" starttime="20170927 10:16:46.286"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${send_message_resp.content}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.590" level="INFO">{
+  "api_id": "dd9af594-a33e-11e7-8bc8-065f6a74a84a",
+  "message": "message(s) queued",
+  "message_uuid": [
+    "dd9da62c-a33e-11e7-8bc8-065f6a74a84a"
+  ]
+}</msg>
+<status status="PASS" endtime="20170927 10:16:46.590" starttime="20170927 10:16:46.589"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${send_message_resp.status_code}</arg>
+<arg>202</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.590" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.590" starttime="20170927 10:16:46.590"></status>
+</kw>
+<kw name="Json Load" library="testlib">
+<arguments>
+<arg>${send_message_resp.content}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.591" level="INFO">${response} = {u'message': u'message(s) queued', u'message_uuid': [u'dd9da62c-a33e-11e7-8bc8-065f6a74a84a'], u'api_id': u'dd9af594-a33e-11e7-8bc8-065f6a74a84a'}</msg>
+<status status="PASS" endtime="20170927 10:16:46.591" starttime="20170927 10:16:46.591"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${response['message']}</arg>
+<arg>${MESSAGE_QUEUED}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.592" level="INFO">Argument types are:
+&lt;type 'unicode'&gt;
+&lt;type 'str'&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:46.592" starttime="20170927 10:16:46.591"></status>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>@{message_id}</arg>
+<arg>${response['message_uuid']}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.593" level="INFO">@{message_id} = [ [u'dd9da62c-a33e-11e7-8bc8-065f6a74a84a'] ]</msg>
+<status status="PASS" endtime="20170927 10:16:46.593" starttime="20170927 10:16:46.592"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:46.594" critical="yes" starttime="20170927 10:16:42.566"></status>
+</test>
+<test id="s1-t2" name="Get message details">
+<kw type="setup" name="Create plivo session" library="Common">
+<kw name="Create List" library="BuiltIn">
+<doc>Returns a list containing given items.</doc>
+<arguments>
+<arg>${AUTH_ID}</arg>
+<arg>${AUTH_TOKEN}</arg>
+</arguments>
+<assign>
+<var>${auth_list}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.595" level="INFO">${auth_list} = ['MAYWYYODBJOTBKM2E4ZT', 'NWRiZDJmYTdhYzlkNTVmNTUwZmVmNzlmNGY4NGNk']</msg>
+<status status="PASS" endtime="20170927 10:16:46.595" starttime="20170927 10:16:46.595"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>https://${BASE_URL}</arg>
+<arg>auth=${auth_list}</arg>
+<arg>verify=False</arg>
+</arguments>
+<msg timestamp="20170927 10:16:46.596" level="INFO">Creating Session using : alias=plivo, url=https://api.plivo.com, headers={},                     cookies=None, auth=&lt;requests.auth.HTTPBasicAuth object at 0x104194310&gt;, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20170927 10:16:46.596" starttime="20170927 10:16:46.595"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:46.596" starttime="20170927 10:16:46.594"></status>
+</kw>
+<kw name="Make get request to fetch message details" library="Search">
+<arguments>
+<arg>@{message_id[0]}</arg>
+</arguments>
+<assign>
+<var>${get_message_details}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>Accept=application/json</arg>
+</arguments>
+<assign>
+<var>${headers}</var>
+</assign>
+<msg timestamp="20170927 10:16:46.597" level="INFO">${headers} = {u'Content-Type': u'application/json', u'Accept': u'application/json'}</msg>
+<status status="PASS" endtime="20170927 10:16:46.598" starttime="20170927 10:16:46.597"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>${API_VERSION}${MESSAGE_ENDPOINT}/${message_id}/</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${get_request_resp}</var>
+</assign>
+<msg timestamp="20170927 10:16:47.585" level="INFO">Get Request using : alias=plivo, uri=/v1/Account/MAYWYYODBJOTBKM2E4ZT/Message/dd9da62c-a33e-11e7-8bc8-065f6a74a84a/, headers={u'Content-Type': u'application/json', u'Accept': u'application/json'} </msg>
+<msg timestamp="20170927 10:16:47.585" level="INFO">${get_request_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:47.586" starttime="20170927 10:16:46.598"></status>
+</kw>
+<msg timestamp="20170927 10:16:47.586" level="INFO">${get_message_details} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:47.586" starttime="20170927 10:16:46.597"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${get_message_details.content}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:47.587" level="INFO">{
+  "api_id": "de393cb8-a33e-11e7-9bde-024427e23b8a",
+  "error_code": null,
+  "from_number": "12342521239",
+  "message_direction": "outbound",
+  "message_state": "sent",
+  "message_time": "2017-09-27 10:16:45+05:30",
+  "message_type": "sms",
+  "message_uuid": "dd9da62c-a33e-11e7-8bc8-065f6a74a84a",
+  "resource_uri": "/v1/Account/MAYWYYODBJOTBKM2E4ZT/Message/dd9da62c-a33e-11e7-8bc8-065f6a74a84a/",
+  "to_number": "12342521240",
+  "total_amount": "0.00350",
+  "total_rate": "0.00350",
+  "units": 1
+}</msg>
+<status status="PASS" endtime="20170927 10:16:47.587" starttime="20170927 10:16:47.586"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${get_message_details.status_code}</arg>
+<arg>200</arg>
+</arguments>
+<msg timestamp="20170927 10:16:47.588" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:47.588" starttime="20170927 10:16:47.588"></status>
+</kw>
+<kw name="Json Load" library="testlib">
+<arguments>
+<arg>${get_message_details.content}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20170927 10:16:47.589" level="INFO">${response} = {u'message_state': u'sent', u'total_amount': u'0.00350', u'message_type': u'sms', u'to_number': u'12342521240', u'total_rate': u'0.00350', u'api_id': u'de393cb8-a33e-11e7-9bde-024427e23b8a', u'message...</msg>
+<status status="PASS" endtime="20170927 10:16:47.589" starttime="20170927 10:16:47.588"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>@{message_id[0]}</arg>
+<arg>${response['message_uuid']}</arg>
+</arguments>
+<status status="PASS" endtime="20170927 10:16:47.590" starttime="20170927 10:16:47.589"></status>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${message_rate_in_resp}</arg>
+<arg>${response['total_rate']}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:47.591" level="INFO">${message_rate_in_resp} = 0.00350</msg>
+<status status="PASS" endtime="20170927 10:16:47.591" starttime="20170927 10:16:47.590"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:47.591" critical="yes" starttime="20170927 10:16:46.594"></status>
+</test>
+<test id="s1-t3" name="Get pricing">
+<kw type="setup" name="Create plivo session" library="Common">
+<kw name="Create List" library="BuiltIn">
+<doc>Returns a list containing given items.</doc>
+<arguments>
+<arg>${AUTH_ID}</arg>
+<arg>${AUTH_TOKEN}</arg>
+</arguments>
+<assign>
+<var>${auth_list}</var>
+</assign>
+<msg timestamp="20170927 10:16:47.593" level="INFO">${auth_list} = ['MAYWYYODBJOTBKM2E4ZT', 'NWRiZDJmYTdhYzlkNTVmNTUwZmVmNzlmNGY4NGNk']</msg>
+<status status="PASS" endtime="20170927 10:16:47.593" starttime="20170927 10:16:47.593"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>https://${BASE_URL}</arg>
+<arg>auth=${auth_list}</arg>
+<arg>verify=False</arg>
+</arguments>
+<msg timestamp="20170927 10:16:47.594" level="INFO">Creating Session using : alias=plivo, url=https://api.plivo.com, headers={},                     cookies=None, auth=&lt;requests.auth.HTTPBasicAuth object at 0x1041f9790&gt;, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20170927 10:16:47.596" starttime="20170927 10:16:47.593"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:47.596" starttime="20170927 10:16:47.592"></status>
+</kw>
+<kw name="Make get request to pricing details" library="Search">
+<arguments>
+<arg>${PRICE_QUERY_DICT}</arg>
+</arguments>
+<assign>
+<var>${get_price_details}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>Accept=application/json</arg>
+</arguments>
+<assign>
+<var>${headers}</var>
+</assign>
+<msg timestamp="20170927 10:16:47.597" level="INFO">${headers} = {u'Content-Type': u'application/json', u'Accept': u'application/json'}</msg>
+<status status="PASS" endtime="20170927 10:16:47.597" starttime="20170927 10:16:47.597"></status>
+</kw>
+<kw name="Url Encode" library="testlib">
+<arguments>
+<arg>${url_params}</arg>
+</arguments>
+<assign>
+<var>${query_string}</var>
+</assign>
+<msg timestamp="20170927 10:16:47.598" level="INFO">${query_string} = country_iso=US</msg>
+<status status="PASS" endtime="20170927 10:16:47.598" starttime="20170927 10:16:47.597"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>${API_VERSION}${PRICING_ENDPOINT}?${query_string}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${get_request_resp}</var>
+</assign>
+<msg timestamp="20170927 10:16:50.889" level="INFO">Get Request using : alias=plivo, uri=/v1/Account/MAYWYYODBJOTBKM2E4ZT/Pricing?country_iso=US, headers={u'Content-Type': u'application/json', u'Accept': u'application/json'} </msg>
+<msg timestamp="20170927 10:16:50.889" level="INFO">${get_request_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:50.889" starttime="20170927 10:16:47.598"></status>
+</kw>
+<msg timestamp="20170927 10:16:50.890" level="INFO">${get_price_details} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:50.890" starttime="20170927 10:16:47.596"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${get_price_details.content}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:50.891" level="INFO">{
+  "api_id": "dfd24d1c-a33e-11e7-a51d-0245fa790d9e",
+  "country": "United States",
+  "country_code": 1,
+  "country_iso": "US",
+  "message": {
+    "inbound": {
+      "rate": "0.00000"
+    },
+    "outbound": {
+      "rate": "0.00350"
+    },
+    "outbound_networks_list": [
+      {
+        "group_name": "US",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - AT&amp;T Mobility",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Choice Phone Llc Dba Iconn",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Commnet Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Docomo Pacific",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Globalstar USA",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Mid-Tex Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Sprint Nextel Corporation, Inc",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - T-Mobile",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Verizon Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Wave Runner",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - ACS",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - ASTAC Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Advantage Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Airadigm Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Allied Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Appalachian Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Blanca Telephone Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Bluegrass Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Bug Tussel Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - C Spire",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - CTC Telecom",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Carolina West Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cellcom",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cellular One of E.Central Illi",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cellular One of NE Arizona",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Chariton Valley Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Chat Mobility",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Choice Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cincinnati Bell Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Copper Valley Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cordova Wireless Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Corr Wireless Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cricket Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cross Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Cross-Valliant Cellular Partnership",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Crossroads Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Custer Telephone Coop.",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Epic Touch Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Etex Communications dba Etex W",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Five Star Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - GCI Communication Corp. dba Ge",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Golden State Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Illinois Valley Cellular RSA 2",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Indigo Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Inland Cellular Telephone Comp",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Iowa Wireless Services",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Kaplan Telephone Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Keystone Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Leaco Rural Telephone Cooperat",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Long Lines Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - MTA Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - MTPCS DBA Cellular One",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Metro PCS",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Mid-Rivers Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - NEP Cellcorp",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - NORTHEAST WIRELESS NETWORKS",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - NW Missouri Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - New Dimensions Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Nex-Tech Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - North Dakota Network Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Oklahoma Western Telephone Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Otz Telecommunications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - PTSI",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Pine Telephone",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Pinpoint Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Pioneer Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Plateau Telecommunications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Proximiti",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Rcc Of Pennsylvania dba Beeper",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - SI WIRELESS",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Sagebrush Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Southern LINC",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - TELECOM NORTH AMERICA MOBILE",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Telalaska Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Telebeeper Of New Mexico",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Thumb Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - UBET",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - US Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Union Telephone Company",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - United Wireless Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - VA PCS Alliance",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Viaero Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - West Central Wireless",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Westlink Communications",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Wilkes Cellular",
+        "rate": "0.00350"
+      },
+      {
+        "group_name": "United States - Wireless Communications",
+        "rate": "0.00350"
+      }
+    ]
+  },
+  "phone_numbers": {
+    "local": {
+      "rate": "0.80000"
+    },
+    "tollfree": {
+      "rate": "1.00000"
+    }
+  },
+  "voice": {
+    "inbound": {
+      "ip": {
+        "rate": "0.00300"
+      },
+      "local": {
+        "rate": "0.00850"
+      },
+      "tollfree": {
+        "rate": "0.02100"
+      }
+    },
+    "outbound": {
+      "ip": {
+        "rate": "0.00300"
+      },
+      "local": {
+        "rate": "0.01200"
+      },
+      "rates": [
+        {
+          "prefix": [
+            "1808"
+          ],
+          "rate": "0.03400"
+        },
+        {
+          "prefix": [
+            "1907"
+          ],
+          "rate": "0.17900"
+        },
+        {
+          "prefix": [
+            "1"
+          ],
+          "rate": "0.01200"
+        },
+        {
+          "prefix": [
+            "1900"
+          ],
+          "rate": "0.60300"
+        }
+      ],
+      "tollfree": {
+        "rate": "0.00300"
+      }
+    }
+  }
+}</msg>
+<status status="PASS" endtime="20170927 10:16:50.891" starttime="20170927 10:16:50.890"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${get_price_details.status_code}</arg>
+<arg>200</arg>
+</arguments>
+<msg timestamp="20170927 10:16:50.892" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:16:50.892" starttime="20170927 10:16:50.892"></status>
+</kw>
+<kw name="Json Load" library="testlib">
+<arguments>
+<arg>${get_price_details.content}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20170927 10:16:50.894" level="INFO">${response} = {u'country': u'United States', u'api_id': u'dfd24d1c-a33e-11e7-a51d-0245fa790d9e', u'country_code': 1, u'country_iso': u'US', u'message': {u'inbound': {u'rate': u'0.00000'}, u'outbound': {u'rate': u'0...</msg>
+<status status="PASS" endtime="20170927 10:16:50.894" starttime="20170927 10:16:50.892"></status>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${outbound_message_price}</arg>
+<arg>${response['message']['outbound']['rate']}</arg>
+</arguments>
+<msg timestamp="20170927 10:16:50.896" level="INFO">${outbound_message_price} = 0.00350</msg>
+<status status="PASS" endtime="20170927 10:16:50.896" starttime="20170927 10:16:50.894"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${outbound_message_price}</arg>
+<arg>${message_rate_in_resp}</arg>
+<arg>msg=message rate and price are not equally</arg>
+</arguments>
+<status status="PASS" endtime="20170927 10:16:50.897" starttime="20170927 10:16:50.896"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:50.897" critical="yes" starttime="20170927 10:16:47.592"></status>
+</test>
+<test id="s1-t4" name="Verify deducted amt equals to message rate">
+<kw type="setup" name="Create plivo session" library="Common">
+<kw name="Create List" library="BuiltIn">
+<doc>Returns a list containing given items.</doc>
+<arguments>
+<arg>${AUTH_ID}</arg>
+<arg>${AUTH_TOKEN}</arg>
+</arguments>
+<assign>
+<var>${auth_list}</var>
+</assign>
+<msg timestamp="20170927 10:16:50.899" level="INFO">${auth_list} = ['MAYWYYODBJOTBKM2E4ZT', 'NWRiZDJmYTdhYzlkNTVmNTUwZmVmNzlmNGY4NGNk']</msg>
+<status status="PASS" endtime="20170927 10:16:50.899" starttime="20170927 10:16:50.898"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>https://${BASE_URL}</arg>
+<arg>auth=${auth_list}</arg>
+<arg>verify=False</arg>
+</arguments>
+<msg timestamp="20170927 10:16:50.899" level="INFO">Creating Session using : alias=plivo, url=https://api.plivo.com, headers={},                     cookies=None, auth=&lt;requests.auth.HTTPBasicAuth object at 0x104153ad0&gt;, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20170927 10:16:50.900" starttime="20170927 10:16:50.899"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:16:50.900" starttime="20170927 10:16:50.898"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>60</arg>
+</arguments>
+<msg timestamp="20170927 10:17:50.901" level="INFO">Slept 1 minute</msg>
+<status status="PASS" endtime="20170927 10:17:50.901" starttime="20170927 10:16:50.900"></status>
+</kw>
+<kw name="Get Account credits">
+<assign>
+<var>${credits_A}</var>
+</assign>
+<kw name="Make get request to get acct details" library="Search">
+<assign>
+<var>${acct_details_resp}</var>
+</assign>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>Accept=application/json</arg>
+</arguments>
+<assign>
+<var>${headers}</var>
+</assign>
+<msg timestamp="20170927 10:17:50.904" level="INFO">${headers} = {u'Content-Type': u'application/json', u'Accept': u'application/json'}</msg>
+<status status="PASS" endtime="20170927 10:17:50.904" starttime="20170927 10:17:50.903"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>plivo</arg>
+<arg>${API_VERSION}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<assign>
+<var>${get_request_resp}</var>
+</assign>
+<msg timestamp="20170927 10:17:52.002" level="INFO">Get Request using : alias=plivo, uri=/v1/Account/MAYWYYODBJOTBKM2E4ZT/, headers={u'Content-Type': u'application/json', u'Accept': u'application/json'} </msg>
+<msg timestamp="20170927 10:17:52.002" level="INFO">${get_request_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:17:52.002" starttime="20170927 10:17:50.904"></status>
+</kw>
+<msg timestamp="20170927 10:17:52.002" level="INFO">${acct_details_resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170927 10:17:52.003" starttime="20170927 10:17:50.902"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${acct_details_resp.content}</arg>
+</arguments>
+<msg timestamp="20170927 10:17:52.003" level="INFO">{
+  "account_type": "standard",
+  "address": "",
+  "api_id": "049efdf2-a33f-11e7-a51d-0245fa790d9e",
+  "auth_id": "MAYWYYODBJOTBKM2E4ZT",
+  "auto_recharge": false,
+  "billing_mode": "prepaid",
+  "cash_credits": "1.56501",
+  "city": "",
+  "name": "Raghu",
+  "resource_uri": "/v1/Account/MAYWYYODBJOTBKM2E4ZT/",
+  "state": "",
+  "timezone": "Asia/Kolkata"
+}</msg>
+<status status="PASS" endtime="20170927 10:17:52.003" starttime="20170927 10:17:52.003"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${acct_details_resp.status_code}</arg>
+<arg>200</arg>
+</arguments>
+<msg timestamp="20170927 10:17:52.004" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:17:52.004" starttime="20170927 10:17:52.004"></status>
+</kw>
+<kw name="Json Load" library="testlib">
+<arguments>
+<arg>${acct_details_resp.content}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20170927 10:17:52.005" level="INFO">${response} = {u'city': u'', u'account_type': u'standard', u'name': u'Raghu', u'cash_credits': u'1.56501', u'state': u'', u'api_id': u'049efdf2-a33f-11e7-a51d-0245fa790d9e', u'billing_mode': u'prepaid', u'auto_rech...</msg>
+<status status="PASS" endtime="20170927 10:17:52.005" starttime="20170927 10:17:52.004"></status>
+</kw>
+<msg timestamp="20170927 10:17:52.005" level="INFO">${credits_A} = 1.56501</msg>
+<status status="PASS" endtime="20170927 10:17:52.005" starttime="20170927 10:17:50.902"></status>
+</kw>
+<kw name="Set Suite Variable" library="BuiltIn">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${credits_After}</arg>
+<arg>${credits_A}</arg>
+</arguments>
+<msg timestamp="20170927 10:17:52.006" level="INFO">${credits_After} = 1.56501</msg>
+<status status="PASS" endtime="20170927 10:17:52.006" starttime="20170927 10:17:52.005"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>${credits_before} - ${credits_After}</arg>
+</arguments>
+<assign>
+<var>${actual_rate}</var>
+</assign>
+<msg timestamp="20170927 10:17:52.007" level="INFO">${actual_rate} = 0.0035</msg>
+<status status="PASS" endtime="20170927 10:17:52.007" starttime="20170927 10:17:52.007"></status>
+</kw>
+<kw name="Should Be Equal As Numbers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<arguments>
+<arg>${actual_rate}</arg>
+<arg>${outbound_message_price}</arg>
+</arguments>
+<msg timestamp="20170927 10:17:52.008" level="INFO">Argument types are:
+&lt;type 'float'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170927 10:17:52.008" starttime="20170927 10:17:52.008"></status>
+</kw>
+<status status="PASS" endtime="20170927 10:17:52.008" critical="yes" starttime="20170927 10:16:50.897"></status>
+</test>
+<status status="PASS" endtime="20170927 10:17:52.009" starttime="20170927 10:16:42.125"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="4">Critical Tests</stat>
+<stat fail="0" pass="4">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="03 SendMessage" pass="4">03 SendMessage</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
