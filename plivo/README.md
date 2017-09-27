@@ -1,4 +1,4 @@
-#### Api Automation test using Robot Framework and request library.
+### Api Automation test using Robot Framework and request library.
 
 Clone the repo once done.
 
