@@ -11,7 +11,7 @@ cp config.py.dist config.py
 Install python 2.7 version
 Once installed you can simply run:
 
-#pip install robotframework
+# pip install robotframework
 
 Install robotframework-requests and it's dependencies via pip
 
